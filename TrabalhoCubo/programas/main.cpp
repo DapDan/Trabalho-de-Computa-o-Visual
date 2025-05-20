@@ -29,8 +29,6 @@ void gerarCorFundoAleatoria() {
 float hLimit;   // limite horizontal (x)
 float vLimit;   // limite vertical (y)
 
-
-
 /** Cube x angle */
 float cx_angle = 0.0f;
 /** Cube x angle increment */
@@ -355,7 +353,7 @@ int main(int argc, char **argv)
     glutInitContextProfile(GLUT_CORE_PROFILE);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(win_width, win_height);
-    glutCreateWindow("Teste Trabalho");
+    glutCreateWindow("Trabalho Cubo");
     glewExperimental = GL_TRUE;
     glewInit();
 

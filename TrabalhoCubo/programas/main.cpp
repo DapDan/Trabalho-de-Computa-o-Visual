@@ -49,7 +49,7 @@ float cz_inc = 0.2f;
 // variaveis para o controle da posicao do objeto e da velocidade
 glm::vec2 pos = glm::vec2(0.0f, 0.0f);    // posição do objeto
 glm::vec2 vel = glm::vec2(0.01f, 0.012f); // velocidade (x, y)
-float objeto_size = 0.2f;                 // "metade do tamanho" do objeto
+float objeto_size = 0.2f;                 // "20% do tamanho" do objeto
 
 
 // Shader de vértices
@@ -108,7 +108,7 @@ const char *fragment_code = "\n"
                             "    float spec = pow(max(dot(v, r), 0.0), 3.0);\n"
                             "    vec3 specular = ks * spec * lightColor;\n"
                             "\n"
-                            "    vec3 light = (ambient + diffuse + specular);\n"
+                            "    vec3 light = (diffuse + specular + ambient);\n"
                             "    fragColor = vec4(vertexColor * light, 1.0);\n"
                             "}\0";
 
@@ -162,8 +162,8 @@ void display()
     loc = glGetUniformLocation(program, "model");
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(model));
 
-    //loc = glGetUniformLocation(program, "objectColor");
-    //glUniform3f(loc, 1.0f, 0.0f, 0.0f); 
+    // loc = glGetUniformLocation(program, "objectColor");
+    // glUniform3f(loc, 1.0f, 0.0f, 0.0f); 
 
     // Cor da luz
     loc = glGetUniformLocation(program, "lightColor");
@@ -171,11 +171,11 @@ void display()
 
     // Posição da luz
     loc = glGetUniformLocation(program, "lightPosition");
-    glUniform3f(loc, 6.0, 0.0, 2.0);
+    glUniform3f(loc, 0.0, 0.0, 0.0);
 
     // Posição da câmera
     loc = glGetUniformLocation(program, "cameraPosition");
-    glUniform3f(loc, 0.0, 0.0, 5.0);
+    glUniform3f(loc, 0.0, 0.0, 0.0);
 
     // Desenha o cubo (tipo da primitiva=GL_TRIANGLES, início na posição 0 do array, 36 vértices a serem desenhados)
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -248,53 +248,53 @@ void initData()
     float cube[] = {
         // Face frontal. Primeiro triângulo
             // coordenada       // cor
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //1R
+             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, //2G
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f, //3B
             // Face frontal. Segundo triângulo
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //1R
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f, //3B
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, //4Y
             // Face direita. Primeiro triângulo
-             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, //2G
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //5Y
+             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, //6R
             // Face direita. Segundo triângulo
-             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
+             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f, //2G
+             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, //6R
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f, //3B
             // Face traseira. Primeiro triângulo
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //5Y
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //8B
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //7G
             // Face traseira. Segundo triângulo
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //5Y
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //7G
+             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, //6R
             // Face esquerda. Primeiro triângulo
-            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //8B
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, //1R
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, //4Y
             // Face esquerda. Segundo triângulo
-            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //8B
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, //4Y
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //7G
             // Face superior. Primeiro triângulo
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, //4Y
+             0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f, //3B
+             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, //6R
             // Face superior. Segundo triângulo
-            -0.5f,  0.5f, 0.5f,  1.0f, 0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 1.0f,
+            -0.5f,  0.5f, 0.5f,  1.0f, 1.0f, 0.0f, //4Y
+             0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f, //6R
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, //7G
             // Face inferior. Primeiro triângulo
-            -0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
-             0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f,  1.0f, 0.0f, 0.0f, //1R
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //8B
+             0.5f, -0.5f, 0.5f,  0.0f, 1.0f, 0.0f, //2G
             // Face inferioir. Segundo triângulo
-            -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 1.0f
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, //8B
+             0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f, //5Y
+             0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f //2G
         };
 
     // VAO guarda os estados/configurações dos atributos de vértice. Definido como os dados serão lidos da GPU
